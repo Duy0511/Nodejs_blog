@@ -1,18 +1,25 @@
-function f1()
-{
-    var N = 0; // N luon duoc khoi tao khoi ham f1 dduowcj thuc thi
-    console.log(N);
-    function f2() // Ham f2
-    {
-        N += 1; // cong don cho bien N
-        console.log('-->>',N);
+function divisibleTriangleNumber(n) {
+    let sum = 0
+    for(let i = 1 ;; i++) {
+        sum += i
+        diangle(sum)
+        if(diangle(sum) >= n){
+            return sum
+        }
     }
-
-    return f2;
-}
-
-var result = f1();
-
-result(); // Chay lan 1
-result(); // Chay lan 2
-result(); // Chay lan 3
+  }
+  function diangle(sum){
+    let arr = {}
+    for(let j = 1 ; j<= sum ; j++){
+        if(sum % j == 0){
+            if(!Array.isArray(arr[sum])){// phải khởi tạo thì mới push nó vào được
+                arr[sum] = []
+            }else{
+                arr[sum].push(j)
+            }
+            
+        }
+    }
+    return arr[sum].length
+  }
+  console.log(divisibleTriangleNumber(6));
