@@ -1,25 +1,35 @@
-function divisibleTriangleNumber(n) {
-    let sum = 0
-    for(let i = 1 ;; i++) {
-        sum += i
-        diangle(sum)
-        if(diangle(sum) >= n){
-            return sum
+function findSubarraysWithSum(m, n) {
+    const result = [];
+    const subarraySums = [];
+    let count = 0
+
+    function findSubarraysHelper(index, currentSum, subarray) {
+        console.log(`${index} + ${currentSum} + ${subarray}`)
+        // console.log(currentSum)
+        if (currentSum === n) {
+            result.push(subarray.slice()); // Thêm một bản sao của dãy con đã tìm thấy vào kết quả
+            subarraySums.push(currentSum); // Lưu tổng của dãy con vào mảng subarraySums
         }
-    }
-  }
-  function diangle(sum){
-    let arr = {}
-    for(let j = 1 ; j<= sum ; j++){
-        if(sum % j == 0){
-            if(!Array.isArray(arr[sum])){// phải khởi tạo thì mới push nó vào được
-                arr[sum] = []
-            }else{
-                arr[sum].push(j)
-            }
-            
+
+        if (index >= m.length || currentSum >= n) {
+            return;
         }
+        // Thử thêm một phần tử vào dãy con và tiếp tục đệ quy
+        findSubarraysHelper(index + 1, currentSum + m[index], subarray.concat(m[index])); // con cai nay no lap tuan tu >11 thi den cai con no se bo di va thay 1 phan tu moi
+
+        // Bỏ qua phần tử hiện tại và tiếp tục đệ quy
+        findSubarraysHelper(index + 1, currentSum, subarray); // khi ma no thay >n thi no se lap phan tu tiep bo qua phan tu hien tai
     }
-    return arr[sum].length
-  }
-  console.log(divisibleTriangleNumber(6));
+
+    findSubarraysHelper(0, 0, []);
+
+    // In ra kết quả
+    for (let i = 0; i < result.length; i++) {
+        console.log(`N = ${n} = ${result[i].join(' + ')}`);
+    }
+}
+
+const m = [1, 4, 6, 3, 2, 2, 8];
+const n = 10;
+
+findSubarraysWithSum(m, n);

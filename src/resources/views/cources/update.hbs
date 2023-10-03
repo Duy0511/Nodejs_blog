@@ -1,0 +1,81 @@
+
+<div class="mt-4">
+  <h2>CẬP NHẬT KHÓA HỌC</h2>
+        <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col" colspan="4">videoId</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each cources }}
+        <tr>
+        <th scope="row">{{sum @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.description}}</td>
+        <td>{{this.videoId}}</td>
+        <td>
+            <a href="/cources/{{this._id}}/edit">sửa</a>
+        </td>
+        <td>
+            <a href="" data-toogle="modal" data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#delete-cource">xóa</a>
+        </td>
+        </tr>
+        {{/each}}
+    </tbody>
+        </table>
+</div>
+{{!-- confirm button --}}
+<div class="modal" id="delete-cource" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">DELETE COURCE</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="delete-button">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- thẻ a nó sẽ xóa luôn nên khi xóa sẽ không lấy được id nên url sẽ k truy cập được nên sẽ lỗi nó sẽ k chuyển method thành delete , phải có thẻ form và button để vá lỗi nhưng thế sẽ cồng kềnh
+<form action="/cources/{{this._id}}/edit/delete?_method=DELETE" method="POST">
+            <a type="submit" href="/cources/{{this._id}}/edit/delete">xóa</a>
+            </form>không được vì thẻ a ko phải button k có submit
+cách thứ 2 là sẽ dùng fetch api để xóa k cần form
+cách thứ 3 là lắng nghe sự kiện của thông báo có muốn xóa hiện lên để lấy id trong bootstrap
+ --}}
+
+
+{{!-- delete hidden form --}}
+<form action="" name="delete-cource-form" method="POST"></form>
+ <script>
+  const formDelete = document.forms['delete-cource-form']
+  const button = document.querySelector('#delete-button')
+  const exampleModal = document.getElementById('delete-cource')
+  let id
+
+if (exampleModal) {
+  exampleModal.addEventListener('show.bs.modal',function(event) {
+    const button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    const recipient = button.getAttribute('data-bs-id')
+    id = recipient
+  })
+  // khai báo biến ngoài cũng được tại vì khi mà nó hết trong {} nó sẽ tự động xóa bỏ
+  
+  button.onclick = function(e){
+  formDelete.action = `/cources/${id}/delete?_method=DELETE`
+  formDelete.submit()
+  }
+  console.log($)
+}
+ </script>
