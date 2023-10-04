@@ -10,7 +10,8 @@ router.post('/stored', courceController.store);
 router.get('/:id/edit', courceController.edit)
 // khi mà put lên thì nó sẽ nhảy vào link này và up dữ liệu lên
 router.put('/:id/edit/update', courceController.update1)
-
+router.get('/bin', courceController.bin)
+router.patch('/:id/restore', courceController.restore)
 router.get('/:slug', courceController.show);
 
 // hàm gốc của router.use('/,function(req, res, next)

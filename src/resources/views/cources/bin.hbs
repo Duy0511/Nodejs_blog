@@ -1,7 +1,6 @@
 
 <div class="mt-4">
-  <h2>CẬP NHẬT KHÓA HỌC</h2>
-  <a href="/cources/bin">Thùng Rác</a>
+  <h2>Thùng rác</h2>
         <table class="table">
     <thead>
         <tr>
@@ -19,19 +18,15 @@
         <td>{{this.description}}</td>
         <td>{{this.videoId}}</td>
         <td>
-            <a href="/cources/{{this._id}}/edit">sửa</a>
+            <a href="" data-bs-id="{{this._id}}" class="restore-cource">Khôi phục</a>
         </td>
         <td>
             <a href="" data-toogle="modal" data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#delete-cource">xóa</a>
         </td>
         </tr>
         {{else}}
-        <tr>
-          <td colspan="5" class="text-center">
-            Bạn chưa có khóa học nào
-            <a href="/cources/create">Đăng khóa học</a>
-          </td>
-        </tr>
+        Thùng rác trống 
+        <a href="/cources/update">Quay lại danh sách</a>
         {{/each}}
     </tbody>
         </table>
@@ -65,12 +60,17 @@ cách thứ 3 là lắng nghe sự kiện của thông báo có muốn xóa hi�
 
 {{!-- delete hidden form --}}
 <form action="" name="delete-cource-form" method="POST"></form>
+<form action="" name="restore-cource-form" method="POST"></form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
  <script>
+  //delete hidden form
   const formDelete = document.forms['delete-cource-form']
-  const button = document.querySelector('#delete-button')
+  //restore hidden form
+  const formRestore = document.forms['restore-cource-form']
+  const buttonDelete = document.querySelector('#delete-button')
+  const buttonRestore = $('.restore-cource')
   const exampleModal = document.getElementById('delete-cource')
-  let id
-
+  let id  
 if (exampleModal) {
   exampleModal.addEventListener('show.bs.modal',function(event) {
     const button = event.relatedTarget
@@ -80,9 +80,17 @@ if (exampleModal) {
   })
   // khai báo biến ngoài cũng được tại vì khi mà nó hết trong {} nó sẽ tự động xóa bỏ
   
-  button.onclick = function(e){
+  buttonDelete.onclick = function(e){
   formDelete.action = `/cources/${id}/delete?_method=DELETE`
   formDelete.submit()
   }
+  buttonRestore.click(function(e) {
+    e.preventDefault()
+    const button = e.currentTarget
+    id = button.getAttribute('data-bs-id')
+    formRestore.action = `/cources/${id}/restore?_method=PATCH`
+    formRestore.submit()
+  })
 }
+
  </script>

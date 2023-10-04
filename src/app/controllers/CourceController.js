@@ -55,12 +55,27 @@ class CourceController {
       .catch(next);
   }
   delete(req, res, next) {
-    Cources.findByIdAndDelete(req.params.id).then(() => {
+    Cources.delete({_id : req.params.id})
+    .then(() => {
       res.redirect('back');
     })
     .catch(next);
   }
-  
+  bin(req, res, next) {
+    Cources.findDeleted({})
+    .then((cources) => {
+      res.render('cources/bin',{ cources: multipleToObject(cources) });
+    })
+    .catch(next);
+  }
+  restore(req, res, next) {
+    Cources.findOneDeleted({_id : req.params.id})
+    .then((cource)=>{
+      cource.restore()
+      res.redirect('back')
+    })
+    .catch(next)
+  }
 }
 
 module.exports = new CourceController();
